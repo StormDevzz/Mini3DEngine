@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+import os
+import sys
+
+env = SConscript("godot-cpp/SConstruct")
+
+# For reference:
+# - CCFLAGS are compilation flags shared between C and C++
+# - CFLAGS are for C-specific compilation flags
+# - CXXFLAGS are for C++-specific compilation flags
+# - CPPFLAGS are for pre-processor flags
+# - CPPDEFINES are for pre-processor defines
+# - LINKFLAGS are for linking flags
+
+# Add source files
+cpp_sources = Glob("src/*.cpp")
+c_sources = Glob("src/*.c")
+
+# Add all sources
+env.Append(CPPPATH=["src/"])
+env.Append(CSOURCES=c_sources)
+env.Append(CPP_SOURCES=cpp_sources)
+
+# Find module name from .gdextension file
+import glob
+gdextension_files = glob.glob("*.gdextension")
+if gdextension_files:
+    module_name = gdextension_files[0].replace(".gdextension", "")
+else:
+    module_name = "zombie_native"
+
+if env["platform"] == "macos":
+    library = env.SharedLibrary(
+        "bin/lib{}.{}.{}.framework/lib{}.{}.{}".format(
+            module_name, env["platform"], env["target"],
+            module_name, env["platform"], env["target"]
+        ),
+        source=cpp_sources + c_sources,
+    )
+else:
+    library = env.SharedLibrary(
+        "bin/lib{}{}{}".format(module_name, env["suffix"], env["SHLIBSUFFIX"]),
+        source=cpp_sources + c_sources,
+    )
+
+Default(library)

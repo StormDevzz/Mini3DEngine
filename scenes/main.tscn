@@ -1,0 +1,104 @@
+[gd_scene load_steps=11 format=3 uid="uid://c8yvxg3ulq3a"]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_game"]
+[ext_resource type="PackedScene" uid="uid://player001" path="res://scenes/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://zombie001" path="res://scenes/zombie.tscn" id="3_zombie"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_001"]
+sky_horizon_color = Color(0.6, 0.7, 0.9, 1)
+ground_horizon_color = Color(0.4, 0.5, 0.3, 1)
+
+[sub_resource type="Sky" id="Sky_001"]
+sky_material = SubResource("SkyMaterial_001")
+
+[sub_resource type="Environment" id="Environment_001"]
+background_mode = 2
+sky = SubResource("Sky_001")
+ambient_light_source = 3
+
+[sub_resource type="BoxMesh" id="GroundMesh_001"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="StandardMaterial3D" id="GroundMat_001"]
+albedo_color = Color(0.2, 0.5, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BuildingMesh_001"]
+size = Vector3(6, 5, 6)
+
+[sub_resource type="StandardMaterial3D" id="BuildingMat_001"]
+albedo_color = Color(0.6, 0.4, 0.2, 1)
+
+[sub_resource type="BoxShape3D" id="GroundShape_001"]
+size = Vector3(100, 1, 100)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_game")
+zombie_scene = ExtResource("3_zombie")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_001")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.7, -0.5, 0.5, 0, 0.7, 0.7, -0.7, -0.5, 0.5, 0, 20, 0)
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("GroundMesh_001")
+surface_material_override/0 = SubResource("GroundMat_001")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("GroundShape_001")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="Spawn1" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -20)
+
+[node name="Spawn2" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -20)
+
+[node name="Spawn3" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 20)
+
+[node name="Spawn4" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 20)
+
+[node name="Spawn5" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -25)
+
+[node name="Spawn6" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 25)
+
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="Building1" type="MeshInstance3D" parent="Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2.5, -15)
+mesh = SubResource("BuildingMesh_001")
+surface_material_override/0 = SubResource("BuildingMat_001")
+
+[node name="Building2" type="MeshInstance3D" parent="Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2.5, -15)
+mesh = SubResource("BuildingMesh_001")
+surface_material_override/0 = SubResource("BuildingMat_001")
+
+[node name="Building3" type="MeshInstance3D" parent="Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2.5, 15)
+mesh = SubResource("BuildingMesh_001")
+surface_material_override/0 = SubResource("BuildingMat_001")
+
+[node name="Building4" type="MeshInstance3D" parent="Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2.5, 15)
+mesh = SubResource("BuildingMesh_001")
+surface_material_override/0 = SubResource("BuildingMat_001")
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

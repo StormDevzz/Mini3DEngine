@@ -1,0 +1,7 @@
+[config]
+name="ZombiePlugin"
+binary_type="local"
+binary="ZombiePlugin.aar"
+
+[dependencies]
+android="kotlin-stdlib-1.8.22.jar"

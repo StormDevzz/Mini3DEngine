@@ -1,0 +1,15 @@
+fc8a56933c4b1c8d796fdb8f7a9f9475
+::res://::1777270974
+export_presets.cfg::TextFile::-1::1777270661::0::1::::<><>::
+icon.png::CompressedTexture2D::2685343443830294910::1777270942::1777270974::0::::<><>::
+::res://build/::1777270638
+::res://materials/::1777270567
+::res://scenes/::1777271244
+main.tscn::PackedScene::209998081263685520::1777270823::0::1::::<><>::res://scripts/game_manager.gd<>uid://player001::::res://scenes/player.tscn<>uid://0ombie001::::res://scenes/zombie.tscn
+player.tscn::PackedScene::27365761918488::1777271244::0::1::::<><>::res://scripts/player.gd
+zombie.tscn::PackedScene::45398768490512::1777270628::0::1::::<><>::res://scripts/zombie.gd
+::res://scripts/::1777271275
+game_manager.gd::GDScript::-1::1777270586::0::1::::<>Node3D<>::
+gun.gd::GDScript::-1::1777270585::0::1::::<>MeshInstance3D<>::
+player.gd::GDScript::-1::1777271275::0::1::::<>CharacterBody3D<>::
+zombie.gd::GDScript::-1::1777270582::0::1::::<>CharacterBody3D<>::
